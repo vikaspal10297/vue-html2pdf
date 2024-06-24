@@ -223,6 +223,18 @@ export default {
 			this.$emit('hasPaginated')
 			this.downloadPdf()
 		},
+		async getPdfUrl() {
+			// Set Element and Html2pdf.js Options
+			const pdfContent = this.$refs.pdfContent
+			let options = this.setOptions()
+
+			this.$emit('beforeDownload', { html2pdf, options, pdfContent })
+
+			const html2PdfSetup = html2pdf().set(options).from(pdfContent)
+
+			let pdfBlobUrl = await html2PdfSetup.output('bloburl')
+			return pdfBlobUrl;
+		},
 
 		async downloadPdf () {
 			// Set Element and Html2pdf.js Options
